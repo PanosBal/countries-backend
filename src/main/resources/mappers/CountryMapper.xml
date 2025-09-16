@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qualco.countries.mapper.CountryMapper">
+
+    <select id="listCountries" resultType="com.qualco.countries.dto.CountryDto">
+        SELECT
+            c.country_id AS countryId,
+            c.name,
+            c.area,
+            c.country_code2
+        FROM
+                countries c
+        ORDER BY
+                c.name ASC
+    </select>
+
+    <select id="languagesByCountryId" resultType="com.qualco.countries.dto.LanguageByCountryDto">
+        SELECT
+            l.language
+        FROM
+            country_languages cl
+        INNER JOIN
+            languages l ON l.language_id = cl.language_id
+        WHERE
+            cl.country_id = #{countryId}
+        ORDER BY
+            l.language ASC
+    </select>
+
+    <select id="existsById" resultType="int">
+        SELECT
+            COUNT(*)
+        FROM
+            countries
+        WHERE
+            country_id = #{countryId}
+    </select>
+</mapper>
